@@ -9,6 +9,7 @@ import { EventDetailHeader } from '@/components/EventDetailHeader';
 import { EventDetailInfo } from '@/components/EventDetailInfo';
 import { EventDetailStats } from '@/components/EventDetailStats';
 import { EventCalendar } from '@/components/EventCalendar';
+import { EventOccurrenceCard } from '@/components/EventOccurrenceCard';
 
 interface EventDetailPageProps {
   params: {
@@ -148,15 +149,16 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
 
         {/* Selected Event Details */}
         {selectedEvent && (
-          <div className="bg-card rounded-lg p-6 mb-8">
+          <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">Selected Event Details</h2>
-            <div className="space-y-3">
-              <p><strong>Date:</strong> {new Date(selectedEvent.startDate).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {new Date(selectedEvent.startDate).toLocaleTimeString()}</p>
-              <p><strong>Duration:</strong> {Math.round((new Date(selectedEvent.endDate).getTime() - new Date(selectedEvent.startDate).getTime()) / (1000 * 60 * 60))} hours</p>
-              <p><strong>Available Slots:</strong> {selectedEvent.availableSlots || 0} / {selectedEvent.maxSlots || 0}</p>
-              <p><strong>Participants:</strong> {selectedEvent.participantsCount}</p>
-            </div>
+            <EventOccurrenceCard
+              event={selectedEvent}
+              onBook={(eventId) => {
+                // TODO: Implement booking functionality in Phase 6
+                console.log('Booking event:', eventId);
+                alert('Booking functionality coming soon!');
+              }}
+            />
           </div>
         )}
 

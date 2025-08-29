@@ -1,14 +1,16 @@
 import { gql } from "graphql-request";
 
-// Query for featured events (highlighted events)
+// Query for featured events (events with images, since there are no highlighted events)
 export const GET_FEATURED_EVENTS = gql`
   query GetFeaturedEvents($limit: Int = 6) {
     class_events(
       where: {
         end_date: { _gte: "now" }
-        is_highlighted: { _eq: true }
         is_cancelled: { _eq: false }
-        class: { id: { _is_null: false } }
+        class: { 
+          id: { _is_null: false }
+          image_url: { _is_null: false }
+        }
       }
       order_by: { start_date: asc }
       limit: $limit

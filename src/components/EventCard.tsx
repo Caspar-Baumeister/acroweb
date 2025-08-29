@@ -86,80 +86,95 @@ export const EventCard: React.FC<EventCardProps> = ({
   if (variant === "compact") {
     return (
       <Card className="hover:shadow-md transition-shadow cursor-pointer">
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <CardTitle className="text-lg">{event.title}</CardTitle>
-              <CardDescription className="line-clamp-2 mt-1">
-                {event.description}
-              </CardDescription>
+        <div className="flex">
+          {/* Image section */}
+          {event.imageUrl && (
+            <div className="w-24 h-24 flex-shrink-0">
+              <img
+                src={event.imageUrl}
+                alt={event.title}
+                className="w-full h-full object-cover rounded-l-lg"
+              />
             </div>
-            <div className="flex flex-col items-end gap-2 ml-4">
-              <Badge
-                variant="secondary"
-                className={getCategoryColor(event.category)}
-              >
-                {event.category}
-              </Badge>
-              {event.isHighlighted && (
-                <Badge
-                  variant="secondary"
-                  className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                >
-                  Featured
-                </Badge>
-              )}
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0 space-y-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="w-4 h-4" />
-            <span>{formatDate(event.startDate)}</span>
-            <Clock className="w-4 h-4 ml-2" />
-            <span>{formatTime(event.startDate)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="w-4 h-4" />
-            <span>{event.location}</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <User className="w-4 h-4" />
-            <span>{event.teacher.name}</span>
-          </div>
-          {event.availableSlots !== undefined &&
-            event.maxSlots !== undefined && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Users className="w-4 h-4" />
-                <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
+          )}
+          {/* Content section */}
+          <div className="flex-1">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
+                  <CardDescription className="line-clamp-2 mt-1">
+                    {event.description}
+                  </CardDescription>
+                </div>
+                <div className="flex flex-col items-end gap-2 ml-4">
+                  <Badge
+                    variant="secondary"
+                    className={getCategoryColor(event.category)}
+                  >
+                    {event.category}
+                  </Badge>
+                  {event.isHighlighted && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                    >
+                      Featured
+                    </Badge>
+                  )}
+                </div>
               </div>
-            )}
-        </CardContent>
-        <CardFooter className="flex justify-between items-center pt-3">
-          <div className="flex items-center gap-2">
-            {formatPrice(event.price) && (
-              <span className="text-lg font-semibold text-primary">
-                {formatPrice(event.price)}
-              </span>
-            )}
+            </CardHeader>
+            <CardContent className="pt-0 space-y-3">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(event.startDate)}</span>
+                <Clock className="w-4 h-4 ml-2" />
+                <span>{formatTime(event.startDate)}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                <span>{event.location}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <User className="w-4 h-4" />
+                <span>{event.teacher.name}</span>
+              </div>
+              {event.availableSlots !== undefined &&
+                event.maxSlots !== undefined && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4" />
+                    <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
+                  </div>
+                )}
+            </CardContent>
+            <CardFooter className="flex justify-between items-center pt-3">
+              <div className="flex items-center gap-2">
+                {formatPrice(event.price) && (
+                  <span className="text-lg font-semibold text-primary">
+                    {formatPrice(event.price)}
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-2">
+                {onViewDetails && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onViewDetails(event.id)}
+                  >
+                    Details
+                  </Button>
+                )}
+                {event.isBookable && onBook && (
+                  <Button size="sm" onClick={() => onBook(event.id)}>
+                    Book Now
+                  </Button>
+                )}
+              </div>
+            </CardFooter>
           </div>
-          <div className="flex gap-2">
-            {onViewDetails && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onViewDetails(event.id)}
-              >
-                Details
-              </Button>
-            )}
-            {event.isBookable && onBook && (
-              <Button size="sm" onClick={() => onBook(event.id)}>
-                Book Now
-              </Button>
-            )}
-          </div>
-        </CardFooter>
+        </div>
       </Card>
     );
   }

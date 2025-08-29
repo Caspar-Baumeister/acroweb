@@ -6,9 +6,23 @@ export const transformEventOccurrence = (
 ): Event => {
   const { class: classData } = eventOccurrence;
 
-  // Get the main teacher (owner)
-  const mainTeacher = classData.class_teachers.find((ct) => ct.is_owner);
-  const teacherName = mainTeacher?.teacher.name || "Unknown Teacher";
+  // Get the main teacher (owner) or first available teacher
+  let mainTeacher = classData.class_teachers.find((ct) => ct.is_owner);
+  if (!mainTeacher && classData.class_teachers.length > 0) {
+    mainTeacher = classData.class_teachers[0];
+  }
+  
+  // Better teacher name handling with fallbacks
+  let teacherName = "Unknown Teacher";
+  if (mainTeacher?.teacher?.name) {
+    teacherName = mainTeacher.teacher.name;
+  } else if (classData.class_teachers.length > 0) {
+    // Try to get any teacher name
+    const anyTeacher = classData.class_teachers.find(ct => ct.teacher?.name);
+    if (anyTeacher?.teacher?.name) {
+      teacherName = anyTeacher.teacher.name;
+    }
+  }
 
   // Get the first available image
   const teacherImage =
@@ -30,6 +44,8 @@ export const transformEventOccurrence = (
   const getCategory = (
     eventType: string
   ): "Festival" | "Workshop" | "Class" => {
+    if (!eventType) return "Class";
+    
     switch (eventType.toLowerCase()) {
       case "festival":
         return "Festival";
@@ -40,18 +56,23 @@ export const transformEventOccurrence = (
     }
   };
 
-  // Format location
-  const location = [classData.location_city, classData.location_country]
-    .filter(Boolean)
-    .join(", ");
+  // Format location with better fallbacks
+  let location = "Location TBD";
+  if (classData.location_name && classData.location_name.trim()) {
+    location = classData.location_name;
+  } else if (classData.location_city || classData.location_country) {
+    location = [classData.location_city, classData.location_country]
+      .filter(Boolean)
+      .join(", ");
+  }
 
   return {
     id: eventOccurrence.id,
-    title: classData.name,
+    title: classData.name || "Untitled Event",
     description: classData.description || "No description available",
     startDate: eventOccurrence.start_date,
     endDate: eventOccurrence.end_date,
-    location: location || classData.location_name || "Location TBD",
+    location,
     teacher: {
       name: teacherName,
       imageUrl: teacherImage,

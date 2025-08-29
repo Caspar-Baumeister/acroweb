@@ -13,6 +13,17 @@ export const graphqlClient = new GraphQLClient(GRAPHQL_ENDPOINT, {
   },
 });
 
+// Helper function to make GraphQL requests
+export const request = async (query: string, variables?: any) => {
+  try {
+    const data = await graphqlClient.request(query, variables);
+    return data;
+  } catch (error) {
+    console.error('GraphQL request failed:', error);
+    throw error;
+  }
+};
+
 // Helper function to create authenticated client
 export const createAuthenticatedClient = (token: string, role?: string) => {
   const headers: Record<string, string> = {

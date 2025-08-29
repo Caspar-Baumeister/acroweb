@@ -68,10 +68,10 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
           id: classData.id,
           name: classData.name,
           description: classData.description,
-          imageUrl: classData.image_url,
-          locationName: classData.location_name,
-          locationCity: classData.location_city,
-          locationCountry: classData.location_country,
+          imageUrl: classData.image_url ?? undefined,
+          locationName: classData.location_name ?? undefined,
+          locationCity: classData.location_city ?? undefined,
+          locationCountry: classData.location_country ?? undefined,
           eventType: classData.event_type,
           urlSlug: classData.url_slug,
           teachers: classData.class_teachers.map((ct: any) => ({
@@ -113,6 +113,7 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
   }, [slug]);
 
   const refetch = () => {
+    setLoading(true);
     fetchClassDetails();
   };
 

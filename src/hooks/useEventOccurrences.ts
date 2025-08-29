@@ -57,18 +57,18 @@ export function useEventOccurrences(classId: number): UseEventOccurrencesReturn 
           startDate: event.start_date,
           endDate: event.end_date,
           isCancelled: event.is_cancelled,
-          availableSlots: event.available_booking_slots,
-          maxSlots: event.max_booking_slots,
+          availableSlots: event.available_booking_slots ?? undefined,
+          maxSlots: event.max_booking_slots ?? undefined,
           isHighlighted: event.is_highlighted,
           participantsCount: event.participants_aggregate?.aggregate?.count || 0,
           class: {
             id: event.class.id,
             name: event.class.name,
             description: event.class.description,
-            imageUrl: event.class.image_url,
-            locationName: event.class.location_name,
-            locationCity: event.class.location_city,
-            locationCountry: event.class.location_country,
+            imageUrl: event.class.image_url || undefined,
+            locationName: event.class.location_name || undefined,
+            locationCity: event.class.location_city || undefined,
+            locationCountry: event.class.location_country || undefined,
             eventType: event.class.event_type,
             urlSlug: event.class.url_slug,
           },
@@ -91,6 +91,7 @@ export function useEventOccurrences(classId: number): UseEventOccurrencesReturn 
   }, [classId]);
 
   const refetch = () => {
+    setLoading(true);
     fetchEventOccurrences();
   };
 

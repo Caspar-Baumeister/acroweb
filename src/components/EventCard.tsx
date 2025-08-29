@@ -89,7 +89,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         <div className="flex">
           {/* Image section */}
           {event.imageUrl && (
-            <div className="w-24 h-24 flex-shrink-0">
+            <div className="w-28 h-28 flex-shrink-0">
               <img
                 src={event.imageUrl}
                 alt={event.title}
@@ -98,16 +98,16 @@ export const EventCard: React.FC<EventCardProps> = ({
             </div>
           )}
           {/* Content section */}
-          <div className="flex-1">
-            <CardHeader className="pb-3">
+          <div className="flex-1 min-w-0">
+            <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <CardTitle className="text-lg">{event.title}</CardTitle>
                   <CardDescription className="line-clamp-2 mt-1">
                     {event.description}
                   </CardDescription>
                 </div>
-                <div className="flex flex-col items-end gap-2 ml-4">
+                <div className="flex flex-col items-end gap-2 ml-3 flex-shrink-0">
                   <Badge
                     variant="secondary"
                     className={getCategoryColor(event.category)}
@@ -125,30 +125,36 @@ export const EventCard: React.FC<EventCardProps> = ({
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="pt-0 space-y-3">
+            <CardContent className="pt-0 space-y-2">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4" />
-                <span>{formatDate(event.startDate)}</span>
+                <span>
+                  {formatDate(event.startDate)}
+                  {event.startDate.split('T')[0] !== event.endDate.split('T')[0] && (
+                    <span> - {formatDate(event.endDate)}</span>
+                  )}
+                </span>
                 <Clock className="w-4 h-4 ml-2" />
                 <span>{formatTime(event.startDate)}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                <span>{event.location}</span>
+                <span className="truncate">{event.location}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <User className="w-4 h-4" />
-                <span>{event.teacher.name}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <User className="w-4 h-4" />
+                  <span className="truncate">{event.teacher.name}</span>
+                </div>
+                {event.isBookable && event.availableSlots !== undefined && event.maxSlots !== undefined && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4" />
+                    <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
+                  </div>
+                )}
               </div>
-                      {event.isBookable && event.availableSlots !== undefined &&
-          event.maxSlots !== undefined && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="w-4 h-4" />
-              <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
-            </div>
-          )}
             </CardContent>
-            <CardFooter className="flex justify-between items-center pt-3">
+            <CardFooter className="flex justify-between items-center pt-2">
               <div className="flex items-center gap-2">
                 {formatPrice(event.price) && (
                   <span className="text-lg font-semibold text-primary">
@@ -157,15 +163,6 @@ export const EventCard: React.FC<EventCardProps> = ({
                 )}
               </div>
               <div className="flex gap-2">
-                {onViewDetails && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onViewDetails(event.id)}
-                  >
-                    Details
-                  </Button>
-                )}
                 {event.isBookable && onBook && (
                   <Button size="sm" onClick={() => onBook(event.id)}>
                     Book Now
@@ -219,7 +216,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             <Calendar className="w-4 h-4" />
             <span>
               {formatDate(event.startDate)}
-              {event.startDate !== event.endDate && (
+              {event.startDate.split('T')[0] !== event.endDate.split('T')[0] && (
                 <span> - {formatDate(event.endDate)}</span>
               )}
             </span>
@@ -253,15 +250,6 @@ export const EventCard: React.FC<EventCardProps> = ({
             )}
           </div>
           <div className="flex gap-2">
-            {onViewDetails && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onViewDetails(event.id)}
-              >
-                Details
-              </Button>
-            )}
             {event.isBookable && onBook && (
               <Button size="sm" onClick={() => onBook(event.id)}>
                 Book Now
@@ -307,7 +295,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           <Calendar className="w-4 h-4" />
           <span>
             {formatDate(event.startDate)}
-            {event.startDate !== event.endDate && (
+            {event.startDate.split('T')[0] !== event.endDate.split('T')[0] && (
               <span> - {formatDate(event.endDate)}</span>
             )}
           </span>
@@ -322,7 +310,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           <User className="w-4 h-4" />
           <span>{event.teacher.name}</span>
         </div>
-        {event.availableSlots !== undefined && event.maxSlots !== undefined && (
+        {event.isBookable && event.availableSlots !== undefined && event.maxSlots !== undefined && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="w-4 h-4" />
             <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
@@ -338,15 +326,6 @@ export const EventCard: React.FC<EventCardProps> = ({
           )}
         </div>
         <div className="flex gap-2">
-          {onViewDetails && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onViewDetails(event.id)}
-            >
-              Details
-            </Button>
-          )}
           {event.isBookable && onBook && (
             <Button size="sm" onClick={() => onBook(event.id)}>
               Book Now

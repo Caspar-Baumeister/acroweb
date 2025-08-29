@@ -140,13 +140,13 @@ export const EventCard: React.FC<EventCardProps> = ({
                 <User className="w-4 h-4" />
                 <span>{event.teacher.name}</span>
               </div>
-              {event.availableSlots !== undefined &&
-                event.maxSlots !== undefined && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Users className="w-4 h-4" />
-                    <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
-                  </div>
-                )}
+                      {event.isBookable && event.availableSlots !== undefined &&
+          event.maxSlots !== undefined && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Users className="w-4 h-4" />
+              <span>{formatSlots(event.availableSlots, event.maxSlots)}</span>
+            </div>
+          )}
             </CardContent>
             <CardFooter className="flex justify-between items-center pt-3">
               <div className="flex items-center gap-2">
@@ -218,14 +218,15 @@ export const EventCard: React.FC<EventCardProps> = ({
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4" />
             <span>
-              {formatDate(event.startDate)} - {formatDate(event.endDate)}
+              {formatDate(event.startDate)}
+              {event.startDate !== event.endDate && (
+                <span> - {formatDate(event.endDate)}</span>
+              )}
             </span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
-            <span>
-              {formatTime(event.startDate)} - {formatTime(event.endDate)}
-            </span>
+            <span>{formatTime(event.startDate)}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
@@ -235,7 +236,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             <User className="w-4 h-4" />
             <span>{event.teacher.name}</span>
           </div>
-          {event.availableSlots !== undefined &&
+          {event.isBookable && event.availableSlots !== undefined &&
             event.maxSlots !== undefined && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Users className="w-4 h-4" />
@@ -304,7 +305,12 @@ export const EventCard: React.FC<EventCardProps> = ({
       <CardContent className="pt-0 space-y-3">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Calendar className="w-4 h-4" />
-          <span>{formatDate(event.startDate)}</span>
+          <span>
+            {formatDate(event.startDate)}
+            {event.startDate !== event.endDate && (
+              <span> - {formatDate(event.endDate)}</span>
+            )}
+          </span>
           <Clock className="w-4 h-4 ml-2" />
           <span>{formatTime(event.startDate)}</span>
         </div>

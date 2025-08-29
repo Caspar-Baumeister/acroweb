@@ -11,14 +11,14 @@ export const transformEventOccurrence = (
   if (!mainTeacher && classData.class_teachers.length > 0) {
     mainTeacher = classData.class_teachers[0];
   }
-  
+
   // Better teacher name handling with fallbacks
   let teacherName = "Unknown Teacher";
   if (mainTeacher?.teacher?.name) {
     teacherName = mainTeacher.teacher.name;
   } else if (classData.class_teachers.length > 0) {
     // Try to get any teacher name
-    const anyTeacher = classData.class_teachers.find(ct => ct.teacher?.name);
+    const anyTeacher = classData.class_teachers.find((ct) => ct.teacher?.name);
     if (anyTeacher?.teacher?.name) {
       teacherName = anyTeacher.teacher.name;
     }
@@ -45,7 +45,7 @@ export const transformEventOccurrence = (
     eventType: string
   ): "Festival" | "Workshop" | "Class" => {
     if (!eventType) return "Class";
-    
+
     switch (eventType.toLowerCase()) {
       case "festival":
         return "Festival";

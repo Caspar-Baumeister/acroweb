@@ -8,6 +8,7 @@ import { useEventSelection } from '@/hooks/useEventSelection';
 import { EventDetailHeader } from '@/components/EventDetailHeader';
 import { EventDetailInfo } from '@/components/EventDetailInfo';
 import { EventDetailStats } from '@/components/EventDetailStats';
+import { EventCalendar } from '@/components/EventCalendar';
 
 interface EventDetailPageProps {
   params: {
@@ -126,13 +127,24 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           }
         />
 
-        {/* Calendar Placeholder */}
-        <div className="bg-card rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Calendar (Coming Soon)</h2>
-          <p className="text-muted-foreground">
-            Beautiful shadcn calendar will be implemented in Phase 4.
-          </p>
-        </div>
+        <EventCalendar
+          events={eventOccurrences}
+          selectedDate={selectedEvent ? new Date(selectedEvent.startDate) : undefined}
+          onDateSelect={(date) => {
+            // Find events for the selected date
+            const dateEvents = eventOccurrences.filter(event => {
+              const eventDate = new Date(event.startDate);
+              return eventDate.toDateString() === date.toDateString();
+            });
+            
+            // Select the first event for that date, or the next upcoming event
+            if (dateEvents.length > 0) {
+              const nextEvent = dateEvents.find(event => new Date(event.startDate) > new Date()) || dateEvents[0];
+              setSelectedEvent(nextEvent);
+            }
+          }}
+          className="mb-8"
+        />
 
         {/* Selected Event Details */}
         {selectedEvent && (

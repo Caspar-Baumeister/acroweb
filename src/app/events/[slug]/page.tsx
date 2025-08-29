@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation';
 import { useClassDetails } from '@/hooks/useClassDetails';
 import { useEventOccurrences } from '@/hooks/useEventOccurrences';
 import { useEventSelection } from '@/hooks/useEventSelection';
+import { EventDetailHeader } from '@/components/EventDetailHeader';
+import { EventDetailInfo } from '@/components/EventDetailInfo';
+import { EventDetailStats } from '@/components/EventDetailStats';
 
 interface EventDetailPageProps {
   params: {
@@ -94,90 +97,34 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            {classDetails.name}
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            {classDetails.description}
-          </p>
-        </div>
-        
-        {/* Event Header with Image */}
-        {classDetails.imageUrl && (
-          <div className="bg-card rounded-lg overflow-hidden mb-8">
-            <div className="relative h-64 w-full">
-              <img
-                src={classDetails.imageUrl}
-                alt={classDetails.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            </div>
-          </div>
-        )}
+        <EventDetailHeader
+          title={classDetails.name}
+          description={classDetails.description}
+          imageUrl={classDetails.imageUrl}
+          category={classDetails.eventType}
+          isHighlighted={false} // TODO: Add isHighlighted to class details
+        />
 
-        {/* Event Information */}
-        <div className="bg-card rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Event Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-medium mb-2">Teachers</h3>
-              <div className="space-y-2">
-                {classDetails.teachers.map((teacher) => (
-                  <div key={teacher.id} className="flex items-center gap-3">
-                    {teacher.imageUrl && (
-                      <img
-                        src={teacher.imageUrl}
-                        alt={teacher.name}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                    )}
-                    <div>
-                      <p className="font-medium">{teacher.name}</p>
-                      {teacher.isOwner && (
-                        <span className="text-sm text-muted-foreground">Lead Teacher</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-medium mb-2">Location</h3>
-              <p className="text-muted-foreground">
-                {classDetails.locationName || 'Location TBD'}
-                {classDetails.locationCity && `, ${classDetails.locationCity}`}
-                {classDetails.locationCountry && `, ${classDetails.locationCountry}`}
-              </p>
-              <h3 className="font-medium mb-2 mt-4">Category</h3>
-              <p className="text-muted-foreground">{classDetails.eventType}</p>
-            </div>
-          </div>
-        </div>
+        <EventDetailInfo
+          teachers={classDetails.teachers}
+          locationName={classDetails.locationName}
+          locationCity={classDetails.locationCity}
+          locationCountry={classDetails.locationCountry}
+          eventType={classDetails.eventType}
+          totalEvents={eventOccurrences.length}
+          upcomingEvents={eventOccurrences.filter(e => new Date(e.startDate) > new Date()).length}
+        />
 
-        {/* Event Statistics */}
-        <div className="bg-card rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Event Statistics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">{eventOccurrences.length}</p>
-              <p className="text-sm text-muted-foreground">Total Events</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">
-                {eventOccurrences.filter(e => new Date(e.startDate) > new Date()).length}
-              </p>
-              <p className="text-sm text-muted-foreground">Upcoming Events</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">
-                {eventOccurrences.reduce((sum, e) => sum + e.participantsCount, 0)}
-              </p>
-              <p className="text-sm text-muted-foreground">Total Participants</p>
-            </div>
-          </div>
-        </div>
+        <EventDetailStats
+          totalEvents={eventOccurrences.length}
+          upcomingEvents={eventOccurrences.filter(e => new Date(e.startDate) > new Date()).length}
+          totalParticipants={eventOccurrences.reduce((sum, e) => sum + e.participantsCount, 0)}
+          averageDuration={eventOccurrences.length > 0 ? 
+            Math.round(eventOccurrences.reduce((sum, e) => 
+              sum + (new Date(e.endDate).getTime() - new Date(e.startDate).getTime()) / (1000 * 60 * 60), 0
+            ) / eventOccurrences.length) : undefined
+          }
+        />
 
         {/* Calendar Placeholder */}
         <div className="bg-card rounded-lg p-6 mb-8">

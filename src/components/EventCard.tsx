@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -45,6 +46,16 @@ export const EventCard: React.FC<EventCardProps> = ({
   onViewDetails,
   variant = "default",
 }) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    // Navigate to the event detail page
+    // For now, we'll use a placeholder slug since we don't have class slugs yet
+    // TODO: Update this when we have proper class slug mapping
+    const classSlug = event.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    router.push(`/events/${classSlug}/${event.id}`);
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
@@ -85,7 +96,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   if (variant === "compact") {
     return (
-      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+      <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleCardClick}>
         {/* Image section - full width at top */}
         {event.imageUrl && (
           <div className="relative h-32 w-full">
@@ -175,7 +186,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   if (variant === "featured") {
     return (
-      <Card className="relative overflow-hidden hover:shadow-lg transition-shadow">
+      <Card className="relative overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={handleCardClick}>
         {event.imageUrl && (
           <div className="relative h-48 w-full">
             <img
@@ -260,7 +271,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   // Default variant
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleCardClick}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">

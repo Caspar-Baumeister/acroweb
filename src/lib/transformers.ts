@@ -28,6 +28,7 @@ export const transformEventOccurrence = (
   const teacherImage =
     mainTeacher?.teacher.images.find((img) => img.is_profile_picture)?.image
       .url || mainTeacher?.teacher.images[0]?.image.url;
+  ent;
 
   // Get the first available price
   const firstCategory = classData.booking_categories[0];

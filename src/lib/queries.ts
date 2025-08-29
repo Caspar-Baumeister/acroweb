@@ -130,3 +130,86 @@ export const GET_UPCOMING_EVENTS = gql`
     }
   }
 `;
+
+// Query for class details by slug
+export const GET_CLASS_BY_SLUG = gql`
+  query GetClassBySlug($slug: String!) {
+    classes(where: { url_slug: { _eq: $slug } }, limit: 1) {
+      id
+      name
+      description
+      image_url
+      location_name
+      location_city
+      location_country
+      event_type
+      url_slug
+      class_teachers {
+        teacher {
+          id
+          name
+          url_slug
+          bio
+          images {
+            image {
+              url
+            }
+            is_profile_picture
+          }
+        }
+        is_owner
+      }
+      booking_categories {
+        id
+        name
+        description
+        booking_options {
+          id
+          price
+          currency
+          title
+          subtitle
+        }
+      }
+    }
+  }
+`;
+
+// Query for event occurrences by class ID
+export const GET_EVENT_OCCURRENCES_BY_CLASS = gql`
+  query GetEventOccurrencesByClass($classId: Int!, $limit: Int = 50) {
+    class_events(
+      where: {
+        class_id: { _eq: $classId }
+        end_date: { _gte: "now" }
+        is_cancelled: { _eq: false }
+      }
+      order_by: { start_date: asc }
+      limit: $limit
+    ) {
+      id
+      start_date
+      end_date
+      is_cancelled
+      available_booking_slots
+      max_booking_slots
+      is_highlighted
+      participants_aggregate {
+        aggregate {
+          count
+        }
+      }
+      class {
+        id
+        name
+        description
+        image_url
+        location_name
+        location_city
+        location_country
+        event_type
+        url_slug
+      }
+    }
+  }
+`;

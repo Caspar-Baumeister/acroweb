@@ -149,7 +149,6 @@ export const GET_CLASS_BY_SLUG = gql`
           id
           name
           url_slug
-          bio
           images {
             image {
               url

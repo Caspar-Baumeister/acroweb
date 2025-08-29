@@ -6,7 +6,6 @@ interface Teacher {
   id: number;
   name: string;
   urlSlug: string;
-  bio?: string;
   imageUrl?: string;
   isOwner: boolean;
 }
@@ -66,16 +65,9 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
                     </Badge>
                   )}
                 </div>
-                {teacher.bio && (
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {teacher.bio}
-                  </p>
-                )}
-                {!teacher.bio && (
-                  <p className="text-muted-foreground text-sm italic">
-                    Bio coming soon...
-                  </p>
-                )}
+                <p className="text-muted-foreground text-sm italic">
+                  Bio coming soon...
+                </p>
               </div>
             </div>
           ))}

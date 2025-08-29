@@ -1,5 +1,13 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useClassDetails } from "@/hooks/useClassDetails";
+import { useEventOccurrences } from "@/hooks/useEventOccurrences";
+import { EventDetailHeader } from "@/components/EventDetailHeader";
+import { EventOccurrenceCard } from "@/components/EventOccurrenceCard";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Calendar, MapPin, Users } from "lucide-react";
 
 interface EventOccurrencePageProps {
   params: {
@@ -8,39 +16,28 @@ interface EventOccurrencePageProps {
   };
 }
 
-export async function generateMetadata({ params }: EventOccurrencePageProps): Promise<Metadata> {
-  const { slug, eventId } = await params;
-  return {
-    title: `Event - ${slug} - ${eventId}`,
-    description: `View details for specific event occurrence`,
-  };
-}
-
-'use client';
-
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useClassDetails } from '@/hooks/useClassDetails';
-import { useEventOccurrences } from '@/hooks/useEventOccurrences';
-import { EventDetailHeader } from '@/components/EventDetailHeader';
-import { EventOccurrenceCard } from '@/components/EventOccurrenceCard';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-react';
-
-export default function EventOccurrencePage({ params }: EventOccurrencePageProps) {
+export default function EventOccurrencePage({
+  params,
+}: EventOccurrencePageProps) {
   const { slug, eventId } = params;
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   // Fetch class details and event occurrences
-  const { classDetails, loading: classLoading, error: classError } = useClassDetails(slug);
-  const { eventOccurrences, loading: eventsLoading, error: eventsError } = useEventOccurrences(
-    classDetails?.id || 0
-  );
+  const {
+    classDetails,
+    loading: classLoading,
+    error: classError,
+  } = useClassDetails(slug);
+  const {
+    eventOccurrences,
+    loading: eventsLoading,
+    error: eventsError,
+  } = useEventOccurrences(classDetails?.id || 0);
 
   // Find the specific event occurrence
   useEffect(() => {
     if (eventOccurrences.length > 0) {
-      const event = eventOccurrences.find(e => e.id === eventId);
+      const event = eventOccurrences.find((e) => e.id === eventId);
       if (event) {
         setSelectedEvent(event);
       }
@@ -75,8 +72,12 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-destructive mb-4">Error Loading Event</h1>
-            <p className="text-muted-foreground mb-4">{classError || eventsError}</p>
+            <h1 className="text-3xl font-bold text-destructive mb-4">
+              Error Loading Event
+            </h1>
+            <p className="text-muted-foreground mb-4">
+              {classError || eventsError}
+            </p>
             <Link href={`/events/${slug}`}>
               <Button>Back to Class Overview</Button>
             </Link>
@@ -92,7 +93,9 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-destructive mb-4">Event Not Found</h1>
+            <h1 className="text-3xl font-bold text-destructive mb-4">
+              Event Not Found
+            </h1>
             <p className="text-muted-foreground mb-4">
               The event occurrence you're looking for doesn't exist.
             </p>
@@ -120,10 +123,10 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
 
         {/* Event Header */}
         <EventDetailHeader
-          title={classDetails?.name || 'Event Details'}
-          description={classDetails?.description || 'No description available'}
+          title={classDetails?.name || "Event Details"}
+          description={classDetails?.description || "No description available"}
           imageUrl={classDetails?.imageUrl}
-          category={classDetails?.eventType || 'Class'}
+          category={classDetails?.eventType || "Class"}
           isHighlighted={selectedEvent.isHighlighted}
         />
 
@@ -134,8 +137,8 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
             event={selectedEvent}
             onBook={(eventId) => {
               // TODO: Implement booking functionality in Phase 6
-              console.log('Booking event:', eventId);
-              alert('Booking functionality coming soon!');
+              console.log("Booking event:", eventId);
+              alert("Booking functionality coming soon!");
             }}
           />
         </div>
@@ -148,20 +151,22 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
               <h3 className="font-semibold">Date & Time</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              {new Date(selectedEvent.startDate).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+              {new Date(selectedEvent.startDate).toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
               })}
             </p>
             <p className="text-sm text-muted-foreground">
-              {new Date(selectedEvent.startDate).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-              })} - {new Date(selectedEvent.endDate).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
+              {new Date(selectedEvent.startDate).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}{" "}
+              -{" "}
+              {new Date(selectedEvent.endDate).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </p>
           </div>
@@ -172,12 +177,13 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
               <h3 className="font-semibold">Location</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              {selectedEvent.class.locationName || 'Location TBD'}
+              {selectedEvent.class.locationName || "Location TBD"}
             </p>
             {selectedEvent.class.locationCity && (
               <p className="text-sm text-muted-foreground">
                 {selectedEvent.class.locationCity}
-                {selectedEvent.class.locationCountry && `, ${selectedEvent.class.locationCountry}`}
+                {selectedEvent.class.locationCountry &&
+                  `, ${selectedEvent.class.locationCountry}`}
               </p>
             )}
           </div>
@@ -188,7 +194,8 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
               <h3 className="font-semibold">Capacity</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              {selectedEvent.participantsCount} / {selectedEvent.maxSlots || 'Unknown'} participants
+              {selectedEvent.participantsCount} /{" "}
+              {selectedEvent.maxSlots || "Unknown"} participants
             </p>
             {selectedEvent.availableSlots !== undefined && (
               <p className="text-sm text-muted-foreground">
@@ -204,7 +211,8 @@ export default function EventOccurrencePage({ params }: EventOccurrencePageProps
           {selectedEvent.isBookable ? (
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                This event is available for booking. Click the book button above to reserve your spot.
+                This event is available for booking. Click the book button above
+                to reserve your spot.
               </p>
               <div className="flex items-center gap-4">
                 <span className="text-sm text-muted-foreground">

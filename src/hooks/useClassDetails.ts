@@ -16,7 +16,6 @@ export interface ClassDetails {
     id: number;
     name: string;
     urlSlug: string;
-    bio?: string;
     imageUrl?: string;
     isOwner: boolean;
   }>;
@@ -78,7 +77,6 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
             id: ct.teacher.id,
             name: ct.teacher.name,
             urlSlug: ct.teacher.url_slug,
-            bio: ct.teacher.bio,
             imageUrl: ct.teacher.images?.[0]?.image?.url,
             isOwner: ct.is_owner,
           })),

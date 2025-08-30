@@ -8,7 +8,7 @@ import { useEventSelection } from "@/hooks/useEventSelection";
 import { EventDetailHeader } from "@/components/EventDetailHeader";
 import { EventDetailInfo } from "@/components/EventDetailInfo";
 import { EventDetailStats } from "@/components/EventDetailStats";
-import { EventCalendar } from "@/components/EventCalendar";
+import { EventOccurrenceList } from "@/components/EventOccurrenceList";
 import { EventOccurrenceCard } from "@/components/EventOccurrenceCard";
 
 interface EventDetailPageProps {
@@ -156,39 +156,12 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           }
         />
 
-        {/* Debug Info */}
-        <div className="bg-muted p-4 rounded-lg mb-4">
-          <p className="text-sm text-muted-foreground">
-            Debug: {eventOccurrences.length} events loaded
-          </p>
-          {eventOccurrences.length > 0 && (
-            <p className="text-sm text-muted-foreground">
-              First event: {eventOccurrences[0].startDate} - {eventOccurrences[0].class.name}
-            </p>
-          )}
-        </div>
 
-        <EventCalendar
+
+        <EventOccurrenceList
           events={eventOccurrences}
-          selectedDate={
-            selectedEvent ? new Date(selectedEvent.startDate) : undefined
-          }
-          onDateSelect={(date) => {
-            // Find events for the selected date
-            const dateEvents = eventOccurrences.filter((event) => {
-              const eventDate = new Date(event.startDate);
-              return eventDate.toDateString() === date.toDateString();
-            });
-
-            // Select the first event for that date, or the next upcoming event
-            if (dateEvents.length > 0) {
-              const nextEvent =
-                dateEvents.find(
-                  (event) => new Date(event.startDate) > new Date()
-                ) || dateEvents[0];
-              setSelectedEvent(nextEvent);
-            }
-          }}
+          selectedEvent={selectedEvent}
+          onEventSelect={setSelectedEvent}
           className="mb-8"
         />
 

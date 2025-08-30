@@ -1,9 +1,9 @@
-import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { MapPin, Users, Calendar } from 'lucide-react';
+import React from "react";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Users, Calendar } from "lucide-react";
 
 interface Teacher {
-  id: number;
+  id: string;
   name: string;
   urlSlug: string;
   imageUrl?: string;
@@ -34,8 +34,8 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
     if (locationName) parts.push(locationName);
     if (locationCity) parts.push(locationCity);
     if (locationCountry) parts.push(locationCountry);
-    
-    return parts.length > 0 ? parts.join(', ') : 'Location TBD';
+
+    return parts.length > 0 ? parts.join(", ") : "Location TBD";
   };
 
   return (
@@ -48,7 +48,10 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
         </h2>
         <div className="space-y-4">
           {teachers.map((teacher) => (
-            <div key={teacher.id} className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
+            <div
+              key={teacher.id}
+              className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg"
+            >
               {teacher.imageUrl && (
                 <img
                   src={teacher.imageUrl}
@@ -60,7 +63,10 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-semibold text-lg">{teacher.name}</h3>
                   {teacher.isOwner && (
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary"
+                    >
                       Lead Teacher
                     </Badge>
                   )}
@@ -83,9 +89,7 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
             Location
           </h2>
           <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-muted-foreground">
-              {formatLocation()}
-            </p>
+            <p className="text-muted-foreground">{formatLocation()}</p>
           </div>
         </div>
 
@@ -111,7 +115,9 @@ export const EventDetailInfo: React.FC<EventDetailInfoProps> = ({
               <p className="text-sm text-muted-foreground">Total Events</p>
             </div>
             <div className="p-4 bg-muted/50 rounded-lg text-center">
-              <p className="text-2xl font-bold text-primary">{upcomingEvents}</p>
+              <p className="text-2xl font-bold text-primary">
+                {upcomingEvents}
+              </p>
               <p className="text-sm text-muted-foreground">Upcoming Events</p>
             </div>
           </div>

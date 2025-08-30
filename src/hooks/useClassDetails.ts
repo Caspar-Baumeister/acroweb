@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { request } from '@/lib/graphql';
-import { GET_CLASS_BY_SLUG } from '@/lib/queries';
+import { useState, useEffect } from "react";
+import { request } from "@/lib/graphql";
+import { GET_CLASS_BY_SLUG } from "@/lib/queries";
 
 export interface ClassDetails {
-  id: number;
+  id: string;
   name: string;
   description: string;
   imageUrl?: string;
@@ -13,18 +13,18 @@ export interface ClassDetails {
   eventType: string;
   urlSlug: string;
   teachers: Array<{
-    id: number;
+    id: string;
     name: string;
     urlSlug: string;
     imageUrl?: string;
     isOwner: boolean;
   }>;
   bookingCategories: Array<{
-    id: number;
+    id: string;
     name: string;
     description: string;
     bookingOptions: Array<{
-      id: number;
+      id: string;
       price: number;
       currency: string;
       title: string;
@@ -47,7 +47,7 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
 
   const fetchClassDetails = async () => {
     if (!slug) {
-      setError('No slug provided');
+      setError("No slug provided");
       setLoading(false);
       return;
     }
@@ -61,7 +61,7 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
 
       if (data.classes && data.classes.length > 0) {
         const classData = data.classes[0];
-        
+
         // Transform the raw GraphQL data to our interface
         const transformedClass: ClassDetails = {
           id: classData.id,
@@ -96,11 +96,13 @@ export function useClassDetails(slug: string): UseClassDetailsReturn {
 
         setClassDetails(transformedClass);
       } else {
-        setError('Class not found');
+        setError("Class not found");
       }
     } catch (err) {
-      console.error('Error fetching class details:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch class details');
+      console.error("Error fetching class details:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch class details"
+      );
     } finally {
       setLoading(false);
     }

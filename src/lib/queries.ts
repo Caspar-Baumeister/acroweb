@@ -7,10 +7,7 @@ export const GET_FEATURED_EVENTS = gql`
       where: {
         end_date: { _gte: "now" }
         is_cancelled: { _eq: false }
-        class: { 
-          id: { _is_null: false }
-          image_url: { _is_null: false }
-        }
+        class: { id: { _is_null: false }, image_url: { _is_null: false } }
       }
       order_by: { start_date: asc }
       limit: $limit
@@ -176,7 +173,7 @@ export const GET_CLASS_BY_SLUG = gql`
 
 // Query for event occurrences by class ID
 export const GET_EVENT_OCCURRENCES_BY_CLASS = gql`
-  query GetEventOccurrencesByClass($classId: Int!, $limit: Int = 50) {
+  query GetEventOccurrencesByClass($classId: uuid!, $limit: Int = 50) {
     class_events(
       where: {
         class_id: { _eq: $classId }

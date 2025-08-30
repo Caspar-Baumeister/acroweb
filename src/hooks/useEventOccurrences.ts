@@ -12,7 +12,7 @@ export interface EventOccurrence {
   isHighlighted: boolean;
   participantsCount: number;
   class: {
-    id: number;
+    id: string;
     name: string;
     description: string;
     imageUrl?: string;
@@ -32,7 +32,7 @@ interface UseEventOccurrencesReturn {
 }
 
 export function useEventOccurrences(
-  classId: number
+  classId: string
 ): UseEventOccurrencesReturn {
   const [eventOccurrences, setEventOccurrences] = useState<EventOccurrence[]>(
     []

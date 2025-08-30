@@ -1,6 +1,6 @@
 "use client";
 
-import { Metadata } from "next";
+import { use } from "react";
 import { notFound } from "next/navigation";
 import { useClassDetails } from "@/hooks/useClassDetails";
 import { useEventOccurrences } from "@/hooks/useEventOccurrences";
@@ -12,13 +12,13 @@ import { EventCalendar } from "@/components/EventCalendar";
 import { EventOccurrenceCard } from "@/components/EventOccurrenceCard";
 
 interface EventDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
-  const { slug } = params;
+  const { slug } = use(params);
 
   // Fetch class details and event occurrences
   const {
@@ -30,7 +30,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     eventOccurrences,
     loading: eventsLoading,
     error: eventsError,
-  } = useEventOccurrences(classDetails?.id || 0);
+  } = useEventOccurrences(classDetails?.id || "");
 
   // Handle event selection
   const { selectedEvent, setSelectedEvent } =
@@ -41,7 +41,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
+          <div className="animate-pulse" data-testid="loading-skeleton">
             <div className="h-8 bg-muted rounded w-1/3 mb-4"></div>
             <div className="h-4 bg-muted rounded w-1/2 mb-8"></div>
 

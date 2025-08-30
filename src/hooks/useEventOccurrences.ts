@@ -10,7 +10,7 @@ export interface EventOccurrence {
   availableSlots?: number;
   maxSlots?: number;
   isHighlighted: boolean;
-  participantsCount: number;
+  isBookable: boolean;
   class: {
     id: string;
     name: string;
@@ -54,9 +54,9 @@ export function useEventOccurrences(
       const variables = { classId };
       const data = await request(GET_EVENT_OCCURRENCES_BY_CLASS, variables);
 
-      if (data.class_events) {
+      if ((data as any).class_events) {
         // Transform the raw GraphQL data to our interface
-        const transformedOccurrences: EventOccurrence[] = data.class_events.map(
+        const transformedOccurrences: EventOccurrence[] = (data as any).class_events.map(
           (event: any) => ({
             id: event.id,
             startDate: event.start_date,
@@ -65,8 +65,7 @@ export function useEventOccurrences(
             availableSlots: event.available_booking_slots ?? undefined,
             maxSlots: event.max_booking_slots ?? undefined,
             isHighlighted: event.is_highlighted,
-            participantsCount:
-              event.participants_aggregate?.aggregate?.count || 0,
+            isBookable: !!(event.available_booking_slots !== null && event.max_booking_slots !== null),
             class: {
               id: event.class.id,
               name: event.class.name,

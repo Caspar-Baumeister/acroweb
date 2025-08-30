@@ -37,7 +37,7 @@ export const EventOccurrenceCard: React.FC<EventOccurrenceCardProps> = ({
   const durationHours = differenceInHours(endDate, startDate);
   const durationMinutes = differenceInMinutes(endDate, startDate) % 60;
   
-  const isBookable = !isPast && !event.isCancelled && event.availableSlots && event.availableSlots > 0;
+  const isBookable = event.isBookable && !isPast && !event.isCancelled && event.availableSlots && event.availableSlots > 0;
   const isFull = event.availableSlots === 0;
   const isAlmostFull = event.availableSlots && event.availableSlots <= 3;
 
@@ -138,17 +138,26 @@ export const EventOccurrenceCard: React.FC<EventOccurrenceCardProps> = ({
           </div>
         </div>
 
-        {/* Capacity and Participants */}
+        {/* Capacity and Booking Status */}
         <div className="flex items-center gap-2">
           <Users className="w-4 h-4 text-muted-foreground" />
           <div className="flex-1">
-            <p className="font-medium">
-              {event.participantsCount} participants
-            </p>
-            {event.availableSlots !== undefined && event.maxSlots !== undefined && (
-              <p className="text-sm text-muted-foreground">
-                {event.availableSlots} of {event.maxSlots} slots available
-              </p>
+            {event.isBookable ? (
+              <>
+                <p className="font-medium">Booking Available</p>
+                {event.availableSlots !== undefined && event.maxSlots !== undefined && (
+                  <p className="text-sm text-muted-foreground">
+                    {event.availableSlots} of {event.maxSlots} slots available
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="font-medium">No Booking</p>
+                <p className="text-sm text-muted-foreground">
+                  This event is not bookable
+                </p>
+              </>
             )}
           </div>
         </div>

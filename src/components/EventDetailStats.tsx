@@ -4,7 +4,7 @@ import { Users, Calendar, Clock, MapPin } from 'lucide-react';
 interface EventDetailStatsProps {
   totalEvents: number;
   upcomingEvents: number;
-  totalParticipants: number;
+  bookableEvents: number;
   averageDuration?: number; // in hours
   locationCount?: number;
 }
@@ -12,7 +12,7 @@ interface EventDetailStatsProps {
 export const EventDetailStats: React.FC<EventDetailStatsProps> = ({
   totalEvents,
   upcomingEvents,
-  totalParticipants,
+  bookableEvents,
   averageDuration,
   locationCount = 1,
 }) => {
@@ -32,8 +32,8 @@ export const EventDetailStats: React.FC<EventDetailStatsProps> = ({
       bgColor: 'bg-green-50 dark:bg-green-950',
     },
     {
-      label: 'Total Participants',
-      value: totalParticipants,
+      label: 'Bookable Events',
+      value: bookableEvents,
       icon: Users,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50 dark:bg-purple-950',
@@ -93,11 +93,11 @@ export const EventDetailStats: React.FC<EventDetailStatsProps> = ({
             <p className="text-xs text-muted-foreground">are upcoming</p>
           </div>
           <div className="text-center p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Average Attendance</p>
+            <p className="text-sm text-muted-foreground mb-1">Booking Rate</p>
             <p className="text-lg font-semibold">
-              {totalEvents > 0 ? Math.round(totalParticipants / totalEvents) : 0}
+              {totalEvents > 0 ? Math.round((bookableEvents / totalEvents) * 100) : 0}%
             </p>
-            <p className="text-xs text-muted-foreground">per event</p>
+            <p className="text-xs text-muted-foreground">are bookable</p>
           </div>
         </div>
       </div>

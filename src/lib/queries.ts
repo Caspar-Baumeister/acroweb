@@ -190,11 +190,6 @@ export const GET_EVENT_OCCURRENCES_BY_CLASS = gql`
       available_booking_slots
       max_booking_slots
       is_highlighted
-      participants_aggregate {
-        aggregate {
-          count
-        }
-      }
       class {
         id
         name

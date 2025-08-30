@@ -137,10 +137,9 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             eventOccurrences.filter((e) => new Date(e.startDate) > new Date())
               .length
           }
-          totalParticipants={eventOccurrences.reduce(
-            (sum, e) => sum + e.participantsCount,
-            0
-          )}
+          bookableEvents={
+            eventOccurrences.filter((e) => e.isBookable).length
+          }
           averageDuration={
             eventOccurrences.length > 0
               ? Math.round(
@@ -156,6 +155,18 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
               : undefined
           }
         />
+
+        {/* Debug Info */}
+        <div className="bg-muted p-4 rounded-lg mb-4">
+          <p className="text-sm text-muted-foreground">
+            Debug: {eventOccurrences.length} events loaded
+          </p>
+          {eventOccurrences.length > 0 && (
+            <p className="text-sm text-muted-foreground">
+              First event: {eventOccurrences[0].startDate} - {eventOccurrences[0].class.name}
+            </p>
+          )}
+        </div>
 
         <EventCalendar
           events={eventOccurrences}

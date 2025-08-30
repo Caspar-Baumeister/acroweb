@@ -21,13 +21,21 @@ export const EventCalendar: React.FC<EventCalendarProps> = ({
 
   // Group events by date
   const eventsByDate = events.reduce((acc, event) => {
-    const dateKey = format(parseISO(event.startDate), "yyyy-MM-dd");
-    if (!acc[dateKey]) {
-      acc[dateKey] = [];
+    try {
+      const dateKey = format(parseISO(event.startDate), "yyyy-MM-dd");
+      if (!acc[dateKey]) {
+        acc[dateKey] = [];
+      }
+      acc[dateKey].push(event);
+    } catch (error) {
+      console.error("Error parsing event date:", event.startDate, error);
     }
-    acc[dateKey].push(event);
     return acc;
   }, {} as Record<string, EventOccurrence[]>);
+
+  // Debug logging
+  console.log("EventCalendar received events:", events);
+  console.log("Events grouped by date:", eventsByDate);
 
   // Custom day renderer to show event indicators
   const renderDay = (day: Date, modifiers: any) => {

@@ -30,7 +30,7 @@ export const EventOccurrenceList: React.FC<EventOccurrenceListProps> = ({
   onEventSelect,
   className,
 }) => {
-  const [expandedCount, setExpandedCount] = useState(5);
+  const [expandedCount, setExpandedCount] = useState(2);
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Sort events by start date (upcoming first)
@@ -45,12 +45,12 @@ export const EventOccurrenceList: React.FC<EventOccurrenceListProps> = ({
   const hasMoreEvents = expandedCount < sortedEvents.length;
 
   const handleShowMore = () => {
-    setExpandedCount(prev => prev + 5);
+    setExpandedCount(prev => prev + 2);
     setIsExpanded(true);
   };
 
   const handleShowLess = () => {
-    setExpandedCount(5);
+    setExpandedCount(2);
     setIsExpanded(false);
   };
 
@@ -246,7 +246,7 @@ export const EventOccurrenceList: React.FC<EventOccurrenceListProps> = ({
                 onClick={handleShowMore}
                 className="flex items-center gap-2"
               >
-                Show More Events
+                Show 2 More Events
                 <ChevronDown className="w-4 h-4" />
               </Button>
             </div>

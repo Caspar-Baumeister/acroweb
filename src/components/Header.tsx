@@ -3,8 +3,9 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, User, Plus } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
@@ -62,21 +63,28 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Event
           </Button>
 
-          <Button size="sm" variant="outline">
-            Sign In
-          </Button>
+          <Link href="/signin">
+            <Button size="sm" variant="outline">
+              Sign In
+            </Button>
+          </Link>
 
-          <Button size="sm" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-            Sign Up
-          </Button>
+          <Link href="/signup">
+            <Button
+              size="sm"
+              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+            >
+              Sign Up
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

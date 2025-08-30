@@ -70,12 +70,12 @@ export const Header: React.FC<HeaderProps> = ({
             Create Event
           </Button>
 
-          <Button variant="ghost" size="icon" onClick={onProfileClick}>
-            <User className="h-5 w-5" />
+          <Button size="sm" variant="outline">
+            Sign In
           </Button>
 
-          <Button size="sm" className="hidden sm:flex">
-            Sign In
+          <Button size="sm" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+            Sign Up
           </Button>
         </div>
       </div>

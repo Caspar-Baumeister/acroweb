@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 import {
-  Globe,
   Mail,
   Phone,
   MapPin,
@@ -20,7 +20,13 @@ export const Footer: React.FC = () => {
           {/* Brand Section */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <Globe className="h-8 w-8 text-primary" />
+              <Image
+                src="/logo_play_store_512.png"
+                alt="AcroWorld Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
               <div>
                 <h3 className="text-xl font-bold text-primary">AcroWorld</h3>
                 <p className="text-sm text-muted-foreground">Community Hub</p>

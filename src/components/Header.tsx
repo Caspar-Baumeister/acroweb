@@ -1,18 +1,19 @@
+"use client";
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Search, User, Globe } from "lucide-react";
+import { Menu, User, Plus } from "lucide-react";
+import Image from "next/image";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
-  onSearchClick?: () => void;
   onProfileClick?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  onMenuToggle,
-  onSearchClick,
-  onProfileClick,
+  onMenuToggle = () => console.log("Menu toggle"),
+  onProfileClick = () => console.log("Profile click"),
 }) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -29,7 +30,13 @@ export const Header: React.FC<HeaderProps> = ({
           </Button>
 
           <div className="flex items-center gap-2">
-            <Globe className="h-8 w-8 text-primary" />
+            <Image
+              src="/logo_play_store_512.png"
+              alt="AcroWorld Logo"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+            />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-primary">AcroWorld</h1>
               <p className="text-xs text-muted-foreground">Community Hub</p>
@@ -46,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
             Teachers
           </Button>
           <Button variant="ghost" className="text-sm">
-            Community
+            Shop
           </Button>
           <Button variant="ghost" className="text-sm">
             About
@@ -54,14 +61,13 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onSearchClick}
-            className="hidden sm:flex"
+        <div className="flex items-center gap-3">
+          <Button 
+            size="sm" 
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
           >
-            <Search className="h-5 w-5" />
+            <Plus className="h-4 w-4 mr-2" />
+            Create Event
           </Button>
 
           <Button variant="ghost" size="icon" onClick={onProfileClick}>

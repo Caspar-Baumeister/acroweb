@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "AcroWorld - Global Acro Yoga Community Hub",
@@ -54,6 +55,11 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-verification-code",
   },
+  icons: {
+    icon: "/logo_play_store_512.png",
+    shortcut: "/logo_play_store_512.png",
+    apple: "/logo_play_store_512.png",
+  },
 };
 
 export default function RootLayout({
@@ -63,7 +69,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { EventsSection } from "@/components/EventsSection";
 import { Footer } from "@/components/Footer";
@@ -42,11 +41,6 @@ export default function Home() {
     // TODO: Implement mobile menu
   };
 
-  const handleSearchClick = () => {
-    console.log("Search click");
-    // TODO: Implement search modal
-  };
-
   const handleProfileClick = () => {
     console.log("Profile click");
     // TODO: Navigate to profile or show auth modal
@@ -54,12 +48,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header
-        onMenuToggle={handleMenuToggle}
-        onSearchClick={handleSearchClick}
-        onProfileClick={handleProfileClick}
-      />
-
       <main>
         <Hero
           onSearch={handleSearch}

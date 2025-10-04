@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useClassDetails } from "@/hooks/useClassDetails";
 import { useEventOccurrences } from "@/hooks/useEventOccurrences";
@@ -19,7 +19,7 @@ interface EventOccurrencePageProps {
 export default function EventOccurrencePage({
   params,
 }: EventOccurrencePageProps) {
-  const { slug, eventId } = params;
+  const { slug, eventId } = use(params);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   // Fetch class details and event occurrences
